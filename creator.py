@@ -9,16 +9,19 @@ class Creator:
         def get_answer(a,b)
             return np.array = a*mean(movies) + b*test
         """
+
         self.a = a
         self.b = b
+        # Вот это написано вслепую
         with open('example.json', 'r') as myfile:
             jdata = myfile.read()
         self.obj = json.loads(jdata)  # parse file
 
-        #       подбор фильма не для себя
+        # подбор фильма не для себя
         self.for_another = bool(self.obj['for_another'])
 
-        data = pd.read_csv('data.csv')
+        data = pd.read_csv('preproc_data2.csv')
+        # Слоаврь признаков (ключ - название, значение - индекс признака в векторе)
         self.enum_columns = {k: v for v, k in enumerate(data.columns)}
         if self.for_another:
             self.vector = np.zeros_like(data.iloc[1])
@@ -68,7 +71,7 @@ class Creator:
     def fill_by_movies(self):
         """open json with rated movies from user fill time, age, rating, """
         n = 0
-        data = pd.read_csv('data.csv')
+        data = pd.read_csv('preproc_data2.csv')
         result = np.zeros_like(self.vector)
 
         for id, rate in zip(self.test_movies_id, self.test_movies_rates):
