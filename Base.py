@@ -12,9 +12,11 @@ short_data = pd.read_csv('short_data.csv', index_col=0)
 # КЛАСС ОБРАБОТЧИКА ОТВЕТОВ ПОЛЬЗОВАТЕЛЯ, КОТОРЫЙ СГЕНЕРИРУЕТ ВЕКТОР
 c = Creator()
 # ВЕКТОР ПОЛУЧЕННЫЙ КЛАССОМ ИЗ JSON (НЕ НАПИСАНО, КАК ОН ЕГО ИМЕННО ОБРАБАТЫВАЕТ)
-vector = c.get_vector()
+vector, data_coefs = c.get_vector()
 # СОЗДАЕМ И "ОБУЧАЕМ" МОДЕЛЬ
 neigh = NearestNeighbors()
+for col, coef in zip(data.columns, data_coefs):
+    data[col] *= coef
 neigh.fit(data)
 # ПОЛУЧАЕМ ИНДЕКСЫ ПОДХОДЯЩИХ ФИЛЬМОВ ИЗ DATA. Порядок фильмов в short data такой же.
 indexs = neigh.kneighbors(vector.reshape(1, -1), 5, return_distance=False)
